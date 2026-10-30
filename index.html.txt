@@ -1,0 +1,444 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AMIRALI SHOP</title>
+
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#0c1020;color:#fff;font-family:Tahoma,Arial}
+button,input,textarea,select{font-family:inherit}
+button{cursor:pointer}
+header{
+ background:linear-gradient(120deg,#693cff,#ed399d);
+ text-align:center;padding:25px 12px
+}
+header h1{margin:0;font-size:29px}
+nav{
+ display:flex;justify-content:center;gap:18px;flex-wrap:wrap;
+ padding:15px;background:#191d33;position:sticky;top:0;z-index:5
+}
+nav a{color:white;text-decoration:none;font-size:13px}
+.hero{
+ margin:18px;padding:35px 15px;text-align:center;border-radius:22px;
+ background:linear-gradient(130deg,#252c56,#542276)
+}
+.hero h2{font-size:25px}
+.hero p{line-height:2;color:#ddd}
+.primary{
+ background:linear-gradient(120deg,#7842ff,#ec3b9b);
+ color:white;border:0;border-radius:12px;padding:12px 18px
+}
+.section{padding:15px 18px}
+.section h2{text-align:center}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
+.tools input,.tools select{
+ flex:1;min-width:130px;padding:12px;background:#191e35;
+ border:1px solid #41496b;color:white;border-radius:11px
+}
+.categories{display:flex;gap:9px;overflow-x:auto;padding:12px 0}
+.cat{
+ white-space:nowrap;background:#202643;color:white;
+ border:1px solid #434a6c;border-radius:25px;padding:10px 16px
+}
+.cat.active{background:#7842ff}
+.products{
+ display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:13px
+}
+.product{
+ background:#191e35;border:1px solid #303754;border-radius:17px;
+ padding:12px;text-align:center;transition:.2s
+}
+.product:active{transform:scale(.98)}
+.product .pic{
+ height:110px;display:flex;align-items:center;justify-content:center;
+ font-size:65px;background:#252b49;border-radius:12px
+}
+.product h3{font-size:15px}
+.price{color:#55e6b6;font-weight:bold}
+.small{
+ border:0;background:#303956;color:white;border-radius:9px;
+ padding:9px;margin:3px
+}
+.panel{
+ margin:18px;padding:18px;background:#191e35;
+ border:1px solid #303754;border-radius:17px
+}
+.empty{text-align:center;color:#aaa;padding:20px}
+.cart-item{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:8px;padding:12px 0;border-bottom:1px solid #343a54
+}
+.cart-item button{
+ background:#7142dc;color:white;border:0;border-radius:7px;padding:7px
+}
+.total{color:#55e6b6;font-size:19px}
+.modal{
+ display:none;position:fixed;inset:0;background:#000c;z-index:20;
+ align-items:center;justify-content:center;padding:12px
+}
+.modal-content{
+ width:100%;max-width:460px;max-height:90vh;overflow-y:auto;
+ background:#171b30;border:1px solid #4d567d;border-radius:20px;padding:18px
+}
+.close{
+ float:left;background:#353c59;color:white;border:0;
+ border-radius:8px;padding:8px 12px
+}
+.detail-pic{
+ clear:both;font-size:85px;text-align:center;padding:15px;
+ background:#252b49;border-radius:14px;margin-top:40px
+}
+.detail-box{
+ background:#252b49;border-radius:13px;padding:14px;margin-top:15px
+}
+.detail-box input,.detail-box textarea,.detail-box select{
+ width:100%;padding:12px;margin:7px 0;background:#171b30;
+ border:1px solid #535b7b;border-radius:9px;color:white
+}
+.detail-box textarea{min-height:85px}
+.size-buttons{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.size-btn{
+ background:#171b30;border:1px solid #687093;color:white;
+ border-radius:9px;padding:11px 15px
+}
+.size-btn.selected{background:#7842ff;border-color:#a67bff}
+.review{
+ background:#191e35;padding:12px;border-radius:11px;margin:10px 0
+}
+.review p{line-height:1.8;overflow-wrap:anywhere}
+.phone{display:none;color:#55e6b6;font-size:22px;direction:ltr}
+footer{text-align:center;background:#15192a;padding:25px;color:#aaa}
+.toast{
+ display:none;position:fixed;bottom:20px;right:50%;
+ transform:translateX(50%);background:#55e6b6;color:#111;
+ padding:12px 20px;border-radius:12px;z-index:30
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <h1>AMIRALI SHOP ✨</h1>
+ <p>انتخاب کن، بگرد و لذت ببر!</p>
+</header>
+
+<nav>
+ <a href="#home">خانه</a>
+ <a href="#products">محصولات</a>
+ <a href="#favorites">علاقه‌مندی‌ها ❤️</a>
+ <a href="#cart">سبد خرید 🛒</a>
+ <a href="#contact">تماس با ما</a>
+</nav>
+
+<section class="hero" id="home">
+ <h2>به فروشگاه امیرعلی خوش آمدید 🔥</h2>
+ <p>محصولات مورد علاقه‌ات رو پیدا کن، جزئیات رو ببین و انتخاب کن.</p>
+ <button class="primary" onclick="goProducts()">شروع خرید 🛍️</button>
+</section>
+
+<section class="section" id="products">
+ <h2>🛍️ محصولات</h2>
+
+ <div class="tools">
+  <input id="search" placeholder="جست‌وجوی محصول..." oninput="renderProducts()">
+  <select id="sort" onchange="renderProducts()">
+   <option value="default">مرتب‌سازی</option>
+   <option value="low">ارزان‌ترین</option>
+   <option value="high">گران‌ترین</option>
+  </select>
+ </div>
+
+ <div class="categories">
+  <button class="cat active" onclick="setCategory('همه',this)">همه</button>
+  <button class="cat" onclick="setCategory('لباس',this)">👕 لباس</button>
+  <button class="cat" onclick="setCategory('کفش',this)">👟 کفش</button>
+  <button class="cat" onclick="setCategory('اکسسوری',this)">⌚ اکسسوری</button>
+ </div>
+
+ <div class="products" id="productList"></div>
+</section>
+
+<section class="section" id="favorites">
+ <h2>❤️ علاقه‌مندی‌ها</h2>
+ <div class="products" id="favoriteList"></div>
+</section>
+
+<section class="panel" id="cart">
+ <h2>🛒 سبد خرید</h2>
+ <div id="cartList"></div>
+ <p class="total" id="total">مجموع: ۰ تومان</p>
+ <button class="primary" onclick="checkout()">ثبت درخواست سفارش</button>
+ <p style="font-size:12px;color:#aaa">پرداخت واقعی در این نسخه فعال نیست.</p>
+</section>
+
+<section class="panel" id="contact" style="text-align:center">
+ <h2>📞 تماس با ما</h2>
+ <p>برای هماهنگی سفارش با ما تماس بگیر.</p>
+ <button class="primary" onclick="showPhone()">نمایش شماره موبایل</button>
+ <p class="phone" id="phone">۰۹۹۳۴۵۶۱۲۰۵</p>
+</section>
+
+<footer>
+ <h3>AMIRALI SHOP 💜</h3>
+ <p>از انتخاب شما ممنونیم</p>
+</footer>
+
+<div class="modal" id="modal">
+ <div class="modal-content">
+  <button class="close" onclick="closeModal()">بستن ×</button>
+  <div id="modalContent"></div>
+ </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const products=[
+ {id:1,name:"تیشرت اسپرت",price:450000,category:"لباس",pic:"👕",desc:"تیشرت مناسب استفاده روزمره.",sizes:["S","M","L","XL","XXL"]},
+ {id:2,name:"هودی مشکی",price:850000,category:"لباس",pic:"🧥",desc:"هودی ساده و شیک.",sizes:["S","M","L","XL","XXL"]},
+ {id:3,name:"کفش ورزشی",price:1200000,category:"کفش",pic:"👟",desc:"کفش مناسب استفاده روزانه.",sizes:["۳۸","۳۹","۴۰","۴۱","۴۲","۴۳","۴۴"]},
+ {id:4,name:"کتونی سفید",price:1450000,category:"کفش",pic:"👟",desc:"مدل ساده و جذاب.",sizes:["۳۸","۳۹","۴۰","۴۱","۴۲","۴۳","۴۴"]},
+ {id:5,name:"ساعت مچی",price:900000,category:"اکسسوری",pic:"⌚",desc:"ساعت با طراحی کلاسیک.",sizes:[]},
+ {id:6,name:"عینک آفتابی",price:350000,category:"اکسسوری",pic:"🕶️",desc:"عینک با طراحی مدرن.",sizes:[]},
+ {id:7,name:"کلاه اسپرت",price:250000,category:"اکسسوری",pic:"🧢",desc:"کلاه مناسب استایل روزمره.",sizes:[]},
+ {id:8,name:"شلوار اسپرت",price:700000,category:"لباس",pic:"👖",desc:"شلوار راحت و اسپرت.",sizes:["S","M","L","XL","XXL"]}
+];
+
+let category="همه";
+let selectedSize="";
+let activeProduct=null;
+let cart=JSON.parse(localStorage.getItem("amirCart")||"[]");
+let favorites=JSON.parse(localStorage.getItem("amirFav")||"[]");
+
+function money(n){return n.toLocaleString("fa-IR")+" تومان"}
+function save(){
+ localStorage.setItem("amirCart",JSON.stringify(cart));
+ localStorage.setItem("amirFav",JSON.stringify(favorites));
+}
+function notify(message){
+ let t=document.getElementById("toast");
+ t.textContent=message;t.style.display="block";
+ setTimeout(()=>t.style.display="none",1800);
+}
+function goProducts(){
+ document.getElementById("products").scrollIntoView({behavior:"smooth"});
+}
+
+function renderProducts(){
+ let q=document.getElementById("search").value.trim().toLowerCase();
+ let list=products.filter(p=>
+  (category==="همه"||p.category===category)&&p.name.toLowerCase().includes(q)
+ );
+ let sort=document.getElementById("sort").value;
+ if(sort==="low")list.sort((a,b)=>a.price-b.price);
+ if(sort==="high")list.sort((a,b)=>b.price-a.price);
+
+ let box=document.getElementById("productList");
+ if(!list.length){box.innerHTML='<p class="empty">محصولی پیدا نشد!</p>';return}
+
+ box.innerHTML=list.map(p=>`
+  <div class="product" onclick="details(${p.id})">
+   <div class="pic">${p.pic}</div>
+   <h3>${p.name}</h3>
+   <p class="price">${money(p.price)}</p>
+   <button class="small" onclick="event.stopPropagation();toggleFav(${p.id})">
+    ${favorites.includes(p.id)?"❤️":"🤍"}
+   </button>
+   <button class="primary" onclick="event.stopPropagation();details(${p.id})">
+    مشاهده جزئیات
+   </button>
+  </div>
+ `).join("");
+}
+
+function setCategory(c,btn){
+ category=c;
+ document.querySelectorAll(".cat").forEach(x=>x.classList.remove("active"));
+ btn.classList.add("active");
+ renderProducts();
+}
+
+function details(id){
+ let p=products.find(x=>x.id===id);
+ activeProduct=id;
+ selectedSize="";
+ let reviews=JSON.parse(localStorage.getItem("reviews_"+id)||"[]");
+ let avg=reviews.length?(reviews.reduce((a,r)=>a+r.rating,0)/reviews.length).toFixed(1):"بدون امتیاز";
+
+ document.getElementById("modalContent").innerHTML=`
+  <div class="detail-pic">${p.pic}</div>
+  <h2>${p.name}</h2>
+  <p>${p.desc}</p>
+  <p class="price">${money(p.price)}</p>
+
+  <div class="detail-box">
+   <h3>📏 سایزهای موجود</h3>
+   ${p.sizes.length?`
+    <div class="size-buttons">
+     ${p.sizes.map(s=>`
+      <button class="size-btn" onclick="chooseSize('${s}',this)">${s}</button>
+     `).join("")}
+    </div>
+    <p id="chosenSize">هنوز سایزی انتخاب نکردی.</p>
+   `:'<p>این محصول سایزبندی ندارد.</p>'}
+  </div>
+
+  <button class="primary" style="width:100%;margin-top:12px"
+   onclick="addSelected(${p.id})">افزودن به سبد خرید 🛒</button>
+
+  <div class="detail-box">
+   <h3>⭐ امتیاز مشتریان</h3>
+   <p>${avg} از ۵ | ${reviews.length} نظر</p>
+  </div>
+
+  <div class="detail-box">
+   <h3>💬 نظر خودت رو بنویس</h3>
+   <input id="reviewName" maxlength="40" placeholder="نام شما">
+   <select id="reviewRating">
+    <option value="5">⭐⭐⭐⭐⭐ عالی</option>
+    <option value="4">⭐⭐⭐⭐ خوب</option>
+    <option value="3">⭐⭐⭐ معمولی</option>
+    <option value="2">⭐⭐ ضعیف</option>
+    <option value="1">⭐ خیلی ضعیف</option>
+   </select>
+   <textarea id="reviewText" maxlength="500" placeholder="نظرت درباره محصول..."></textarea>
+   <button class="primary" onclick="submitReview(${p.id})">ثبت نظر</button>
+  </div>
+
+  <div class="detail-box">
+   <h3>🗣️ نظرات کاربران</h3>
+   <div id="reviewList">
+    ${reviews.length?reviews.map(r=>`
+     <div class="review">
+      <b>${escapeText(r.name)}</b>
+      <p>${"⭐".repeat(r.rating)}</p>
+      <p>${escapeText(r.text)}</p>
+     </div>
+    `).join(""):'<p>هنوز نظری ثبت نشده است.</p>'}
+   </div>
+  </div>
+ `;
+ document.getElementById("modal").style.display="flex";
+}
+
+function chooseSize(size,btn){
+ selectedSize=size;
+ document.querySelectorAll(".size-btn").forEach(b=>b.classList.remove("selected"));
+ btn.classList.add("selected");
+ document.getElementById("chosenSize").textContent="سایز انتخاب‌شده: "+size;
+}
+
+function addSelected(id){
+ let p=products.find(x=>x.id===id);
+ if(p.sizes.length&&!selectedSize){
+  alert("اول یکی از سایزها رو انتخاب کن!");
+  return;
+ }
+ addCart(id,selectedSize);
+ closeModal();
+}
+
+function addCart(id,size=""){
+ let item=cart.find(x=>x.id===id&&x.size===size);
+ if(item)item.qty++;
+ else cart.push({id,qty:1,size});
+ save();renderCart();notify("به سبد خرید اضافه شد!");
+}
+
+function renderCart(){
+ let box=document.getElementById("cartList");
+ if(!cart.length){
+  box.innerHTML='<p class="empty">سبد خرید خالی است.</p>';
+  document.getElementById("total").textContent="مجموع: ۰ تومان";
+  return;
+ }
+ let total=0;
+ box.innerHTML=cart.map(item=>{
+  let p=products.find(x=>x.id===item.id);
+  if(!p)return "";
+  total+=p.price*item.qty;
+  return `<div class="cart-item">
+   <div>${p.pic} ${p.name}<br>${item.size?"سایز: "+item.size+"<br>":""}${money(p.price)}</div>
+   <div>
+    <button onclick="changeQty(${p.id},'${item.size}',-1)">−</button>
+    ${item.qty}
+    <button onclick="changeQty(${p.id},'${item.size}',1)">+</button>
+    <button onclick="removeCart(${p.id},'${item.size}')">حذف</button>
+   </div>
+  </div>`;
+ }).join("");
+ document.getElementById("total").textContent="مجموع: "+money(total);
+}
+
+function changeQty(id,size,amount){
+ let item=cart.find(x=>x.id===id&&x.size===size);
+ if(!item)return;
+ item.qty+=amount;
+ if(item.qty<=0)removeCart(id,size);
+ else{save();renderCart()}
+}
+function removeCart(id,size){
+ cart=cart.filter(x=>!(x.id===id&&x.size===size));
+ save();renderCart();
+}
+
+function toggleFav(id){
+ if(favorites.includes(id))favorites=favorites.filter(x=>x!==id);
+ else favorites.push(id);
+ save();renderProducts();renderFavorites();
+}
+
+function renderFavorites(){
+ let list=products.filter(p=>favorites.includes(p.id));
+ let box=document.getElementById("favoriteList");
+ if(!list.length){box.innerHTML='<p class="empty">هنوز محصولی ذخیره نکردی ❤️</p>';return}
+ box.innerHTML=list.map(p=>`
+  <div class="product" onclick="details(${p.id})">
+   <div class="pic">${p.pic}</div>
+   <h3>${p.name}</h3>
+   <p class="price">${money(p.price)}</p>
+   <button class="small" onclick="event.stopPropagation();toggleFav(${p.id})">حذف ❤️</button>
+  </div>
+ `).join("");
+}
+
+function submitReview(id){
+ let name=document.getElementById("reviewName").value.trim();
+ let text=document.getElementById("reviewText").value.trim();
+ let rating=Number(document.getElementById("reviewRating").value);
+ if(!name||!text){alert("نام و متن نظر رو وارد کن!");return}
+ let reviews=JSON.parse(localStorage.getItem("reviews_"+id)||"[]");
+ reviews.unshift({name,text,rating});
+ localStorage.setItem("reviews_"+id,JSON.stringify(reviews));
+ details(id);
+ notify("نظرت ثبت شد ❤️");
+}
+
+function escapeText(s){
+ return String(s).replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
+}
+
+function closeModal(){document.getElementById("modal").style.display="none"}
+document.getElementById("modal").addEventListener("click",e=>{
+ if(e.target.id==="modal")closeModal();
+});
+function showPhone(){document.getElementById("phone").style.display="block"}
+
+function checkout(){
+ if(!cart.length){notify("سبد خرید خالی است!");return}
+ alert("برای هماهنگی سفارش با شماره ۰۹۹۳۴۵۶۱۲۰۵ تماس بگیر. پرداخت آنلاین هنوز فعال نیست.");
+}
+
+renderProducts();
+renderCart();
+renderFavorites();
+</script>
+</body>
+</html>
